@@ -1,7 +1,12 @@
-let timeLeft = 25 * 60; // 25 minutes in seconds
+let focusDuration = 25 * 60;
+let breakDuration = 5 * 60;
+
+let mode = "focus";
+let timeLeft = focusDuration;
 let timerInterval = null;
 
 const timerDisplay = document.getElementById("timer");
+const modeLabel = document.getElementById("modeLabel");
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
@@ -11,6 +16,19 @@ function updateDisplay() {
     const seconds = timeLeft % 60;
     timerDisplay.textContent =
         `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function switchMode() {
+    if (mode === "focus") {
+        mode = "break";
+        timeLeft = breakDuration;
+        modeLabel.textContent = "Break";
+    } else {
+        mode = "focus";
+        timeLeft = focusDuration;
+        modeLabel.textContent = "Focus";
+    }
+    updateDisplay();
 }
 
 function startTimer() {
@@ -26,6 +44,7 @@ function startTimer() {
             clearInterval(timerInterval);
             timerInterval = null;
             startBtn.disabled = false;
+            switchMode();
         }
     }, 1000);
 }
@@ -38,7 +57,9 @@ function pauseTimer() {
 
 function resetTimer() {
     pauseTimer();
-    timeLeft = 25 * 60;
+    mode = "focus";
+    modeLabel.textContent = "Focus";
+    timeLeft = focusDuration;
     updateDisplay();
 }
 
