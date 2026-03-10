@@ -10,6 +10,9 @@ const modeLabel = document.getElementById("modeLabel");
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
+const focusInput = document.getElementById("focusInput");
+const breakInput = document.getElementById("breakInput");
+const applyBtn = document.getElementById("applyBtn");
 
 function updateDisplay() {
     const minutes = Math.floor(timeLeft / 60);
@@ -63,8 +66,27 @@ function resetTimer() {
     updateDisplay();
 }
 
+function applySettings() {
+    const newFocus = parseInt(focusInput.value) * 60;
+    const newBreak = parseInt(breakInput.value) * 60;
+
+    if (newFocus > 0 && newBreak > 0) {
+        focusDuration = newFocus;
+        breakDuration = newBreak;
+
+        // Reset to focus mode after applying
+        mode = "focus";
+        modeLabel.textContent = "Focus";
+        timeLeft = focusDuration;
+
+        pauseTimer();
+        updateDisplay();
+    }
+}
+
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
+applyBtn.addEventListener("click", applySettings);
 
 updateDisplay();

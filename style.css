@@ -21,3 +21,18 @@ button {
     margin: 5px;
     font-size: 16px;
 }
+
+.settings {
+    margin-top: 20px;
+}
+
+.settings label {
+    display: block;
+    margin: 5px 0;
+}
+
+.settings input {
+    width: 60px;
+    padding: 5px;
+    margin-left: 5px;
+}
