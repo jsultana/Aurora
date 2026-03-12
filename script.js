@@ -4,6 +4,7 @@ let breakDuration = 5 * 60;
 let mode = "focus";
 let timeLeft = focusDuration;
 let timerInterval = null;
+let sessions = [];
 
 const timerDisplay = document.getElementById("timer");
 const modeLabel = document.getElementById("modeLabel");
@@ -13,6 +14,9 @@ const resetBtn = document.getElementById("resetBtn");
 const focusInput = document.getElementById("focusInput");
 const breakInput = document.getElementById("breakInput");
 const applyBtn = document.getElementById("applyBtn");
+const sessionList = document.getElementById("sessionList");
+const sessionCountEl = document.getElementById("sessionCount");
+const totalMinutesEl = document.getElementById("totalMinutes");
 
 function updateDisplay() {
     const minutes = Math.floor(timeLeft / 60);
@@ -34,6 +38,48 @@ function switchMode() {
     updateDisplay();
 }
 
+function logSession() {
+    const session = {
+        type: mode,
+        duration: mode === "focus" ? focusDuration : breakDuration,
+        completedAt: new Date().toISOString()
+    };
+
+    sessions.push(session);
+    renderSessions();
+
+    console.log("Session logged:", session);
+    console.log("All sessions:", sessions);
+}
+
+function saveSessions() {
+    localStorage.setItem("auroraSessions", JSON.stringify(sessions));
+}
+
+function renderSessions() {
+    sessionList.innerHTML = "";
+
+    sessions.forEach(session => {
+        const li = document.createElement("li");
+
+        const minutes = session.duration / 60;
+        const time = new Date(session.completedAt).toLocaleTimeString();
+
+        li.textContent = `${session.type.toUpperCase()} - ${minutes} min - completed at ${time}`;
+
+        sessionList.appendChild(li);
+    });
+
+    // Update summary stats
+    sessionCountEl.textContent = sessions.length;
+
+    const totalMinutes = sessions.reduce((sum, session) => {
+        return sum + (session.duration / 60);
+    }, 0);
+
+    totalMinutesEl.textContent = totalMinutes;
+}
+
 function startTimer() {
     if (timerInterval !== null) return;
 
@@ -44,11 +90,16 @@ function startTimer() {
             timeLeft--;
             updateDisplay();
         } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            startBtn.disabled = false;
-            switchMode();
-        }
+    clearInterval(timerInterval);
+    timerInterval = null;
+    startBtn.disabled = false;
+
+    if (mode === "focus") {
+        logSession();
+    }
+
+    switchMode();
+}
     }, 1000);
 }
 
@@ -90,3 +141,4 @@ resetBtn.addEventListener("click", resetTimer);
 applyBtn.addEventListener("click", applySettings);
 
 updateDisplay();
+renderSessions();
