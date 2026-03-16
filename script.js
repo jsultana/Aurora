@@ -19,6 +19,7 @@ const sessionCountEl = document.getElementById("sessionCount");
 const totalMinutesEl = document.getElementById("totalMinutes");
 const tagInput = document.getElementById("tagInput");
 const mostUsedTagEl = document.getElementById("mostUsedTag");
+const tagMinutesList = document.getElementById("tagMinutesList");
 
 // Load saved durations
 const savedDurations = JSON.parse(localStorage.getItem("auroraDurations"));
@@ -106,7 +107,7 @@ function renderSessions() {
 
     totalMinutesEl.textContent = totalMinutes;
 
-        const tagCounts = {};
+    const tagCounts = {};
 
     sessions.forEach(session => {
         const tag = session.tag || "untitled";
@@ -124,6 +125,22 @@ function renderSessions() {
     }
 
     mostUsedTagEl.textContent = mostUsedTag;
+    const tagMinutes = {};
+
+    sessions.forEach(session => {
+        const tag = session.tag || "untitled";
+        const minutes = session.duration / 60;
+        tagMinutes[tag] = (tagMinutes[tag] || 0) + minutes;
+    });
+
+    tagMinutesList.innerHTML = "";
+
+    for (const tag in tagMinutes) {
+        const li = document.createElement("li");
+        li.textContent = `${tag}: ${tagMinutes[tag]} min`;
+        tagMinutesList.appendChild(li);
+    }
+}
 
 function startTimer() {
     if (timerInterval !== null) return;
