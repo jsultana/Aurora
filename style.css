@@ -36,3 +36,15 @@ button {
     padding: 5px;
     margin-left: 5px;
 }
+
+#summary ul,
+#sessionList {
+    text-align: left;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+#tagMinutesList li,
+#sessionList li {
+    margin-bottom: 6px;
+}
