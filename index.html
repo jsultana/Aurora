@@ -11,6 +11,7 @@
         <h1>Aurora</h1>
         <h2 id="modeLabel">Focus</h2>
         <div id="timer">25:00</div>
+
         <div class="buttons">
             <button id="startBtn">Start</button>
             <button id="pauseBtn">Pause</button>
@@ -19,26 +20,32 @@
     </div>
 
     <div class="settings">
-    <label>
-        Focus (minutes):
-        <input type="number" id="focusInput" min="1" max="120" value="25">
-    </label>
+        <label>
+            Focus (minutes):
+            <input type="number" id="focusInput" min="1" max="120" value="25">
+        </label>
+
+        <label>
+            Break (minutes):
+            <input type="number" id="breakInput" min="1" max="60" value="5">
+        </label>
+
+        <label>
+            Session tag:
+            <input type="text" id="tagInput" placeholder="e.g. FYP">
+        </label>
+
+        <button id="applyBtn">Apply</button>
+    </div>
 
     <div id="summary">
-    <p>Total focus sessions: <span id="sessionCount">0</span></p>
-    <p>Total focus minutes: <span id="totalMinutes">0</span></p>
-</div>
+        <p>Total focus sessions: <span id="sessionCount">0</span></p>
+        <p>Total focus minutes: <span id="totalMinutes">0</span></p>
+        <p>Most used tag: <span id="mostUsedTag">None yet</span></p>
+    </div>
 
     <h3>Session History</h3>
-<ul id="sessionList"></ul>
-
-    <label>
-        Break (minutes):
-        <input type="number" id="breakInput" min="1" max="60" value="5">
-    </label>
-
-    <button id="applyBtn">Apply</button>
-</div>
+    <ul id="sessionList"></ul>
 
     <script src="script.js"></script>
 </body>
